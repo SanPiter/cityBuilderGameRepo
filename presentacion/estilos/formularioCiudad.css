@@ -8,11 +8,11 @@ body{
 }
 
 .container-sm {
-    max-width: 450px; /* Esto hace que la caja no sea gigante */
+    max-width: 450px;
     width: 100%;
 }
 
 .card {
     border: none;
-    border-radius: 15px; /* Bordes más redondeados para suavidad */
+    border-radius: 15px; /* Bordes redondos*/
 }
