@@ -11,34 +11,34 @@
 <body class="d-flex align-items-center justify-content-center min-vh-100">
     <div class="d-flex flex-column align-items-center w-100">
         <h3 class="mb-4">Crear nueva ciudad</h3>
-        <div class="container-sm">
+        <div class="container-md">
             <div class="card shadow-sm">
                 <div class="card-body p-4">
                     <form>
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <label for="nombreCiudad" class="form-label">Nombre de la ciudad</label>
-                                <input id="nombreCiudad" type="text" class="form-control" placeholder="ingrese el nombre de la ciudad">
+                        <div class="row g-3 justify-content-center">
+                            <div class="col-12 col-md-6 ">
+                                <label for="nombreCiudad" class="form-label" >Nombre de la ciudad</label>
+                                <input id="nombreCiudad" type="text" class="form-control" placeholder="ingrese el nombre de la ciudad" maxlength="50" required>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 col-md-6">
                                 <label for="nombreAlcalde" class="form-label">Nombre del alcalde</label>
-                                <input id="nombreAlcalde" type="text" class="form-control" placeholder="ingrese el nombre del jugador">
+                                <input id="nombreAlcalde" type="text" class="form-control" placeholder="ingrese el nombre del jugador" maxlength="50" required>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 col-md-6">
                                 <label for="selectRegion" class="form-label">Region geografica</label>
-                                <select id="selectRegion" class="form-select" name="region">
-                                    <option selected disabled>Seleccione una region</option>
-                                    <option value="15">Andina</option>
-                                    <option value="16">Caribe</option>
-                                    <option value="17">Pacifica</option>
-                                    <option value="18">Orinoquia</option>
-                                    <option value="19">Amazonia</option>
+                                <select id="selectRegion" class="form-select" name="region" required>
+                                    <option value="" selected disabled>Seleccione una region</option>
+                                    <option value="1">Andina</option>
+                                    <option value="2">Caribe</option>
+                                    <option value="3">Pacifica</option>
+                                    <option value="4">Orinoquia</option>
+                                    <option value="5">Amazonia</option>
                                 </select>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 col-md-6">
                                 <label for="selectTamano" class="form-label">Tamano del mapa</label>
-                                <select id="selectTamano" class="form-select" name="mapa">
-                                    <option selected disabled>Seleccione un tamaño</option>
+                                <select id="selectTamano" class="form-select" name="mapa" required>
+                                    <option value="" selected disabled>Seleccione un tamaño</option>
                                     <option value="15">15x15</option>
                                     <option value="16">16x16</option>
                                     <option value="17">17x17</option>
@@ -59,7 +59,7 @@
                             </div>
                         </div>
                         <div class="mt-4 text-center">
-                            <button type="submit" class="btn btn-primary px-5">Ingresar</button>
+                            <button type="submit" class="btn btn-primary px-5">crear ciudad</button>
                         </div>
                     </form>
                 </div>
