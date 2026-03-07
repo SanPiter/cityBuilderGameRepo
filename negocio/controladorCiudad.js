@@ -25,7 +25,7 @@ document.querySelector("form").addEventListener("submit", function(e){
     //se inicializan valores por defecto
     const economia = new Economia({});
 
-    const ciudad = new Ciudad({ nombre, region, mapa, economia });
+    const ciudad = new Ciudad({ nombre, region, mapa, economia});
 
     console.log(ciudad.mapa.celdas)
     console.log(ciudad.economia.dinero, ciudad.economia.electricidad, ciudad.economia.agua, ciudad.economia.alimento)
@@ -35,9 +35,9 @@ document.querySelector("form").addEventListener("submit", function(e){
     localStorage.setItem("ciudad", JSON.stringify({
         nombre,
         region,
-        tamanoMapa,
+        tamanoMapa
     }));
 
-    window.location.href = "../vistas/index.html";
+    window.location.href = "../vistas/juego.html";
 
     }); 

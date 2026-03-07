@@ -22,6 +22,7 @@ function iniciarJuego() {
     });
 
     juego = new Juego({ ciudad });
+    
     nombreCiudad.textContent = juego.ciudad.nombre;
 
     renderizarCiudad();
@@ -43,6 +44,7 @@ function renderizarCiudad(){
             const div = document.createElement("div");
             div.classList.add("celda");
 
+            //obtener las coordenadas de cada celda para luego poder colocar elementos en el mapa
             div.dataset.x = x;
             div.dataset.y = y;
 
