@@ -82,8 +82,6 @@ function construirVia(event) {
 
     const {economia} = juego.ciudad;
 
-    const celdaActual = juego.ciudad.mapa.celdas[y][x]; 
-
     if(celdaActual !== "g"){
         alert("Ya existe un elemento en esta celda");
         return;
