@@ -7,9 +7,20 @@ import { TipoResidencial } from "../modelos/Enums.js";
 import { CiudadRepository } from "../accesoDatos/CiudadRepository.js";
 import { SistemaTurnos } from "./SistemaTurnos.js";
 
-const itemCasa = document.getElementById("itemCasa");
-const itemApartamento = document.getElementById("itemApartamento");
-const btnConstruirVia =  document.getElementById("btnConstruirVia");
+const btnCasa = document.getElementById("itemCasa");
+const btnApartamento = document.getElementById("itemApartamento");
+const btnTienda = document.getElementById("itemTienda");
+const btnMall = document.getElementById("itemMall");
+const btnFabrica = document.getElementById("itemFabrica");
+const btnGranja = document.getElementById("itemGranja");
+const btnPolicia = document.getElementById("itemPolicia");
+const btnBomberos = document.getElementById("itemBomberos");
+const btnHospital = document.getElementById("itemHospital");
+const btnPlantaElectrica = document.getElementById("itemElectrica");
+const btnPlantaAgua = document.getElementById("itemAgua");
+const btnParque = document.getElementById("itemParque");
+
+const btnVia =  document.getElementById("itemVia");
 const btnDemoler =  document.getElementById("btnDemoler");
 const mapaDiv = document.getElementById("mapa");
 const nombreCiudadTitulo = document.getElementById("nombreCiudad");
@@ -30,15 +41,15 @@ const ciudadRepository = new CiudadRepository();
 
 window.addEventListener("DOMContentLoaded", iniciarJuego);
 
-itemCasa?.addEventListener("click", function() {
+btnCasa?.addEventListener("click", function() {
     activarModoConstruccion(MODOS_CONSTRUCCION.CASA);
 });
 
-itemApartamento?.addEventListener("click", function() {
+btnApartamento?.addEventListener("click", function() {
     activarModoConstruccion(MODOS_CONSTRUCCION.APARTAMENTO);
 });
 
-btnConstruirVia?.addEventListener("click", function() {
+btnVia?.addEventListener("click", function() {
     activarModoConstruccion(MODOS_CONSTRUCCION.VIA);
 });
 
@@ -73,8 +84,7 @@ function iniciarJuego() {
         () => {
             guardarCiudad();
             renderizarCiudad();
-        },
-        10
+        }
     );
 
     sistemaTurnos.iniciar();
@@ -89,7 +99,6 @@ function renderizarCiudad() {
     mapaDiv.style.gridTemplateColumns = `repeat(${ancho}, 1fr)`;
 
     celdas.forEach((fila, y) => {
-
         fila.forEach((celda, x) => {
 
             const div = document.createElement("div");
@@ -99,7 +108,6 @@ function renderizarCiudad() {
             div.setAttribute("subtype", celda);
 
             mapaDiv.appendChild(div);
-
         });
     });
 
@@ -168,10 +176,10 @@ function prepararConstruccionResidencial(event) {
     economia.dinero -= costo;
     juego.ciudad.mapa.celdas[y][x] = subtipo;
 
+    console.log(`Construido ${tipoSeleccionado} en (${x}, ${y}). Costo: ${costo}. Dinero restante: ${economia.dinero}`);
     renderizarCiudad();
     guardarCiudad();
     desactivarModoConstruccion();
-    alert("Edificio residencial construido con exito");
 }
 
 function actualizarContadorResidenciales() {
@@ -179,7 +187,7 @@ function actualizarContadorResidenciales() {
         return;
     }
 
-    const celdas = juego.ciudad.mapa.celdas;
+    const {celdas} = juego.ciudad.mapa;
     let casas = 0;
     let apartamentos = 0;
 
@@ -222,7 +230,7 @@ function obtenerSubtipoResidencialPorModo(modo) {
 }
 
 function tieneViaAdyacente(x, y) {
-    const celdas = juego.ciudad.mapa.celdas;
+    const {celdas} = juego.ciudad.mapa;
     const maxY = celdas.length;
     const maxX = celdas[0].length;
 
@@ -264,12 +272,13 @@ function construirVia(event) {
     economia.dinero -= via.costo;
     juego.ciudad.mapa.celdas[y][x] = via.subtipo;
 
+
     renderizarCiudad();
     guardarCiudad();
     desactivarModoConstruccion();
 }
 
-//guarda la ciudad actualizada en local storage, se llama cada vez que se realiza una acción que modifica el estado de la ciudad, como construir o demoler edificios..
+
 function guardarCiudad(){
     const dataGuardada = ciudadRepository.obtenerConfiguracionInicial();
 
@@ -297,4 +306,3 @@ function guardarCiudad(){
 
     localStorage.setItem(idCiudad, JSON.stringify(dataCiudad));
 }
-

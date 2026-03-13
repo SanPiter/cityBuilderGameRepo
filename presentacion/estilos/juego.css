@@ -18,17 +18,21 @@ body{
 
 .celda{
     background: green;
-    border-radius: 5px;
+    border-radius: 3px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+/* via */
+
 .celda[subtype="r"]{
-    background-image: url("/textures/concreteTexture.webp");
+    background-image: url("/textures/via.webp");
     background-size: cover;
 }
+
+/* residenciales */
 
 .celda[subtype="R1"]{
     background-image: url("/textures/casa.png");
@@ -39,6 +43,86 @@ body{
 
 .celda[subtype="R2"]{
     background-image: url("/textures/apartamento.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* comerciales */
+
+.celda[subtype="C1"]{
+    background-image: url("/textures/tienda.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.celda[subtype="C2"]{
+    background-image: url("/textures/centro-comercial.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* industriales */
+
+.celda[subtype="I1"]{
+    background-image: url("/textures/fabrica1.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.celda[subtype="I2"]{
+    background-image: url("/textures/granja.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* planta servicios */
+
+.celda[subtype="S1"]{
+    background-image: url("/textures/policia-estacion.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.celda[subtype="S2"]{
+    background-image: url("/textures/estacion-bomberos.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.celda[subtype="S3"]{
+    background-image: url("/textures/hospital.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* plantas utilidad */
+
+.celda[subtype="U1"]{
+    background-image: url("/textures/planta-electrica.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.celda[subtype="U2"]{
+    background-image: url("/textures/planta-agua.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* parque */
+
+.celda[subtype="P1"]{
+    background-image: url("/textures/parque.png");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

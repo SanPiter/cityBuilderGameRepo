@@ -104,7 +104,7 @@ export class CiudadRepository {
 
 		const nombreCiudad = String(data.nombreCiudad ?? "").trim();
 		const nombreAlcalde = String(data.nombreAlcalde ?? "").trim();
-		const region = data.region;
+		const {region} = data;
 		const tamanoMapa = Number(data.tamanoMapa);
 
 		if (nombreCiudad.length === 0 || nombreCiudad.length > 50) {

@@ -4,10 +4,9 @@ import { TipoResidencial } from "../modelos/Enums.js";
 export class SistemaTurnos {
 	#juego;
 	#onActualizacion;
-	#segundosPorTurno;
 	#intervalId;
 
-	constructor(juego, onActualizacion, segundosPorTurno = 10) {
+	constructor(juego, onActualizacion) {
 		if (!(juego instanceof Juego)) {
 			throw new Error("SistemaTurnos requiere una instancia valida de Juego");
 		}
@@ -16,24 +15,30 @@ export class SistemaTurnos {
 			throw new Error("onActualizacion debe ser una funcion");
 		}
 
-		if (!Number.isFinite(segundosPorTurno) || segundosPorTurno <= 0) {
-			throw new Error("segundosPorTurno debe ser un numero positivo");
+		if (!Number.isFinite(juego.tiempoPorTurno) || juego.tiempoPorTurno <= 0) {
+			throw new Error("tiempoPorTurno debe ser un numero positivo");
 		}
 
 		this.#juego = juego;
 		this.#onActualizacion = onActualizacion;
-		this.#segundosPorTurno = segundosPorTurno;
 		this.#intervalId = null;
 	}
 
+	// Inicia el sistema de turnos, procesando un turno cada tiempoPorTurno segundos
 	iniciar() {
 		if (this.#intervalId !== null) {
 			return;
 		}
+		//esta parte es una prueba (BORRAR DESPUES)
+		this.#juego.ciudad.economia.electricidad = 100;
+		this.#juego.ciudad.economia.agua = 100;
+
+		console.log(this.#juego.ciudad.economia.electricidad,
+		this.#juego.ciudad.economia.agua);
 
 		this.#intervalId = setInterval(() => {
 			this.procesarTurno();
-		}, this.#segundosPorTurno * 1000);
+		}, this.#juego.tiempoPorTurno * 1000);
 	}
 
 	pausar() {
@@ -45,12 +50,12 @@ export class SistemaTurnos {
 		this.#intervalId = null;
 	}
 
-	detener() {
+	detener(){
 		this.pausar();
 	}
 
 	procesarTurno() {
-		const celdas = this.#juego.ciudad.mapa.celdas;
+		const {celdas} = this.#juego.ciudad.mapa;
 		const { economia } = this.#juego.ciudad;
 
 		let casas = 0;
