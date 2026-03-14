@@ -4,6 +4,10 @@ body{
     align-items: center;
 }
 
+.cursor-demolicion {
+    cursor: url("/textures/hammer1redim.png"), auto;
+}
+
 #mapa{
     display: grid;
     gap: 2px;

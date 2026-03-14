@@ -82,7 +82,7 @@ export class CiudadRepository {
 		const state = this.#cargarEstado();
 		// Normaliza para garantizar contrato unico antes de guardar.
 		const ciudad = this.#normalizarCiudad(ciudadData);
-		const idCiudad = ciudad.idCiudad;
+		const {idCiudad} = ciudad;
 
 		state.cities[idCiudad] = ciudad;
 		if (!state.cityIds.includes(idCiudad)) {

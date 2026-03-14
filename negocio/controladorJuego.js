@@ -9,7 +9,7 @@ import { EdificioIndustrial } from "../modelos/EdificioIndustrial.js";
 import { EdificioServicio } from "../modelos/EdificioServicio.js";
 import { PlantaUtilidad } from "../modelos/PlantaUtilidad.js";
 import { Parque } from "../modelos/Parque.js";
-import { CiudadRepository } from "../accesoDatos/CiudadRepository.js";
+import { CiudadRepository } from "../accesoDatos/ciudadRepository.js";
 import { SistemaTurnos } from "./SistemaTurnos.js";
 import { TipoComercial, TipoIndustrial, TipoServicio, TipoUtilidad, TipoResidencial } from "../modelos/Enums.js";
 
@@ -62,6 +62,7 @@ const MODOS_CONSTRUCCION = Object.freeze({
 
 
 let juego;
+let modo = "";
 let modoConstruccionActivo = MODOS_CONSTRUCCION.NINGUNO;
 let sistemaTurnos;
 const ciudadRepository = new CiudadRepository();
@@ -130,11 +131,11 @@ btnParque?.addEventListener("click", function() {
 );
 
 btnDemoler?.addEventListener("click", function() {
-    desactivarModoConstruccion();
+    activarModoDemolicion();
 });
 
 
-mapaDiv?.addEventListener("click", construirElemento);
+mapaDiv?.addEventListener("click", manejarClickMapa);
 
 function iniciarJuego() {
     const data = ciudadRepository.obtenerCiudadActual();
@@ -173,6 +174,18 @@ function iniciarJuego() {
     sistemaTurnos.iniciar();
 }
 
+function manejarClickMapa(e){
+
+    if(modo === "construir"){
+        construirElemento(e);
+    }
+
+    else if(modo === "demoler"){
+        destruirElemento(e);
+    }
+
+}
+
 function renderizarCiudad() {
     mapaDiv.innerHTML = "";
 
@@ -198,14 +211,69 @@ function renderizarCiudad() {
 }
 
 //settea el modo y cambia el aspecto del cursor
-function activarModoConstruccion(modo) {
-    modoConstruccionActivo = modo;
+function activarModoConstruccion(modoConstruir) {
+    modo = "construir"
+    modoConstruccionActivo = modoConstruir;
     document.body.style.cursor = "crosshair";
 }
 
 function desactivarModoConstruccion() {
     modoConstruccionActivo = MODOS_CONSTRUCCION.NINGUNO;
     document.body.style.cursor = "default";
+}
+
+function activarModoDemolicion(){
+    modo = "demoler"
+    document.body.style.cursor = "";
+    document.body.classList.add("cursor-demolicion");
+}
+
+function desactivarModoDemolicion(){
+    document.body.classList.remove("cursor-demolicion");
+}
+
+function destruirElemento(event){
+    if (!event.target.classList.contains("celda")) return;
+
+    const x = Number(event.target.dataset.x);
+    const y = Number(event.target.dataset.y);
+
+    const subtipo = juego.ciudad.mapa.celdas[y][x];
+
+    if(subtipo === "g") return;
+
+    const confirmar = confirm("¿Seguro que deseas destruir este elemento?");
+
+    if(!confirmar){
+        return;
+    }
+
+    let costo = 0;
+
+    if(subtipo === "r"){
+        const via = new Via(0);
+        costo = via.costo;
+    }
+
+    else if(subtipo === "P1"){
+        const parque = new Parque(0);
+        costo = parque.costo;
+    }
+
+    else{
+        const tipo = obtenerTipoPorSubtipo(subtipo);
+        const edificio = crearEdificio(0, tipo);
+        costo = edificio.costo;
+        console.log(tipo)
+    }
+
+    juego.ciudad.economia.dinero += Math.floor(costo * 0.5);
+
+    juego.ciudad.mapa.celdas[y][x] = "g";
+
+    renderizarCiudad();
+    guardarCiudad();
+    desactivarModoDemolicion();
 }
 
 function construirElemento(event){
@@ -292,10 +360,9 @@ function crearEdificio(id, tipo){
     return null;
 }
 
+function obtenerTipoPorModo(modoConstruir){
 
-function obtenerTipoPorModo(modo){
-
-    switch(modo){
+    switch(modoConstruir){
 
         case MODOS_CONSTRUCCION.CASA:
             return TipoResidencial.CASA;
@@ -335,6 +402,20 @@ function obtenerTipoPorModo(modo){
     }
 }
 
+function obtenerTipoPorSubtipo(subtipo){
+
+    //convierte enums en un solo arreglo
+    const todos = [
+        ...Object.values(TipoResidencial),
+        ...Object.values(TipoComercial),
+        ...Object.values(TipoIndustrial),
+        ...Object.values(TipoServicio),
+        ...Object.values(TipoUtilidad)
+    ];
+
+    //busca dentro del arreglo todos el primero que coincida en el subtipo.
+    return todos.find(tipo => tipo.subtipo === subtipo);
+}
 
 //este metodo simplemente actualiza los contadores de los elementos en pantalla.
 function actualizarContadorElementos() {
