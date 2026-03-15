@@ -14,6 +14,9 @@ import { SistemaTurnos } from "./SistemaTurnos.js";
 import { controladorCiudadanos } from "./controladorCiudadanos.js";
 import { TipoComercial, TipoIndustrial, TipoServicio, TipoUtilidad, TipoResidencial } from "../modelos/Enums.js";
 import * as Rutas from "./controladorRutas.js";
+import { cargarActualizarNoticias } from "./ControladorNoticias.js";
+import { cargarActualizarClima } from "./ControladorClima.js";
+import { COORDENADAS_REGIONES } from "../accesoDatos/ClimaRepositorio.js";
 
 
 //botones
@@ -47,17 +50,6 @@ const contadorIndustriales = document.getElementById("contadorIndustriales");
 const contadorParques = document.getElementById("contadorParques");
 const contadorVias = document.getElementById("contadorVias");
 const estadisticasCiudadanosLabel = document.getElementById("estadisticasCiudadanos");
-
-const COORDENADAS_REGIONES = { //solo la ciudad mas imoirtante de cada region(no se donde va cali dicen que pacifico y andina)
-    "1": { lat: 4.6097, lon: -74.0817 }, // Andina (Bogotá)
-    "2": { lat: 10.9685, lon: -74.7813 }, // Caribe (Barranquilla)
-    "3": { lat: 5.6947, lon: -76.6611 },  // Pacífica (Quibdó)
-    "4": { lat: 4.1420, lon: -73.6266 },  // Orinoquía (Villavicencio)
-    "5": { lat: -4.2153, lon: -69.9406 }  // Amazonía (Leticia)
-};
-
-
-const NEWS_API_KEY = 'cef654a6ffa14e18bf4b692f76e40a5c';
 
 const MODOS_CONSTRUCCION = Object.freeze({
     NINGUNO: "NINGUNO",
@@ -211,16 +203,14 @@ async function iniciarJuego() {
     nombreCiudadTitulo.textContent = juego.ciudad.nombre;
     //clima
     const coordenadas = COORDENADAS_REGIONES[data.region];
-    if (coordenadas) {
-        const clima = await obtenerClima(coordenadas.lat, coordenadas.lon);
-        if (clima) {
-            actualizarWidgetClima(clima);
+if (coordenadas) {
+    cargarActualizarClima(coordenadas); // El controlador se encarga de obtener y actualizar
 
-            setInterval(() => {
-                cargarActualizarClima(coordenadas);
-            }, 1800000);
-        }
-    }
+    setInterval(() => {
+        cargarActualizarClima(coordenadas);
+    }, 1800000);
+}
+
     cargarActualizarNoticias();
     setInterval(() => {
         cargarActualizarNoticias();
