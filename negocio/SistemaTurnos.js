@@ -115,12 +115,15 @@ export class SistemaTurnos {
 		this._aplicarFelicidadCiudadanos(totals.beneficioFelicidadTotal);
 	}
 
+	this.#juego.turnoActual++;
+
 	const balance = (totals.produccionElectricidad + totals.produccionAgua + totals.ingresoTotal) - (totals.consumoElectricidad + totals.consumoAgua);
 	const estadisticasCiudadanos = this.#controladorCiudadanos && typeof this.#controladorCiudadanos.obtenerEstadisticas === "function"
 		? this.#controladorCiudadanos.obtenerEstadisticas()
 		: null;
 
 	this.#onActualizacion({
+		turnoActual: this.#juego.turnoActual,
 		consumoElectricidad: totals.consumoElectricidad,
 		consumoAgua: totals.consumoAgua,
 		produccionElectricidad: totals.produccionElectricidad,

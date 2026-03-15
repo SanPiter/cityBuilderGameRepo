@@ -1,0 +1,85 @@
+body{
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(180deg,#dff5e1,#e6f2ff);
+    margin:0;
+    padding:0;
+}
+
+.current-city{
+background:#fff3cd;
+font-weight:bold;
+}
+
+.ranking-header{
+    text-align:center;
+    padding:30px;
+    background:#2f7d32;
+    color:white;
+}
+
+.ranking-container{
+    width:85%;
+    margin:auto;
+    margin-top:30px;
+}
+
+.ranking-actions{
+    display:flex;
+    gap:10px;
+    margin-bottom:15px;
+}
+
+button{
+    padding:10px 16px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+#btn-volver{
+    background:#4CAF50;
+    color:white;
+}
+
+#btn-exportar{
+    background:#2196F3;
+    color:white;
+}
+
+#btn-reset{
+    background:#e53935;
+    color:white;
+}
+
+.ranking-table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    box-shadow:0 3px 8px rgba(0,0,0,0.15);
+}
+
+.ranking-table th{
+    background:#5a99d8;
+    color:white;
+    padding:10px;
+}
+
+.ranking-table td{
+    text-align:center;
+    padding:8px;
+    border-bottom:1px solid #ddd;
+}
+
+.ranking-table tr:hover{
+    background:#f1f8ff;
+}
+
+.player-position{
+    width:85%;
+    margin:auto;
+    margin-top:20px;
+    padding:15px;
+    background:#e3f2fd;
+    border-left:6px solid #1976D2;
+}

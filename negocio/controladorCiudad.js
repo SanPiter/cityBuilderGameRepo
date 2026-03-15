@@ -1,16 +1,6 @@
-import { CiudadRepository } from "../accesoDatos/CiudadRepository.js";
+import { CiudadRepository } from "../accesoDatos/ciudadRepository.js";
 
 const ciudadRepository = new CiudadRepository();
-
-document.querySelector("#toLoadFile").addEventListener("click", function(){
-    //verificar que el archivo es de tipo .txt
-    //obtener y abrir documento 
-    // manipular el documento para obtener los datos necesarios para crear la ciudad
-    //debo crear mapa
-    // debo crear ciudad
-    //debo guardar en local storage mediante ciudadRepository
-    
-});
 
 document.querySelector("form").addEventListener("submit", function(e){
     e.preventDefault();
@@ -23,8 +13,8 @@ document.querySelector("form").addEventListener("submit", function(e){
     try {
         // Persistencia centralizada: toda ciudad nueva se crea via repository.
         ciudadRepository.guardarConfiguracionInicial({
-            nombreCiudad: nombre,
-            nombreAlcalde: alcalde,
+            nombre: nombre,
+            alcalde: alcalde,
             region,
             tamanoMapa
         });

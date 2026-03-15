@@ -42,8 +42,8 @@ export class CiudadRepository {
 		const idCiudad = this.#crearIdCiudad();
 		const ciudad = this.#normalizarCiudad({
 			idCiudad,
-			nombre: normalized.nombreCiudad,
-			alcalde: normalized.nombreAlcalde,
+			nombre: normalized.nombre,
+			alcalde: normalized.alcalde,
 			region: normalized.region,
 			mapa: {
 				ancho: normalized.tamanoMapa,
@@ -77,11 +77,9 @@ export class CiudadRepository {
 	 * @param {Object} [options]
 	 * @param {boolean} [options.setAsCurrent=false]
 	 */
-	guardarCiudad(ciudadData, options = {}) {
+	guardarCiudad(ciudad, options = {}) {
 		const { setAsCurrent = false } = options;
 		const state = this.#cargarEstado();
-		// Normaliza para garantizar contrato unico antes de guardar.
-		const ciudad = this.#normalizarCiudad(ciudadData);
 		const {idCiudad} = ciudad;
 
 		state.cities[idCiudad] = ciudad;
@@ -562,16 +560,17 @@ export class CiudadRepository {
 			throw new Error("La configuracion inicial es obligatoria");
 		}
 
-		const nombreCiudad = String(data.nombreCiudad ?? "").trim();
-		const nombreAlcalde = String(data.nombreAlcalde ?? "").trim();
+
+		const nombre = String(data.nombre ?? "").trim();
+		const alcalde = String(data.alcalde ?? "").trim();
 		const {region} = data;
 		const tamanoMapa = Number(data.tamanoMapa);
 
-		if (nombreCiudad.length === 0 || nombreCiudad.length > 50) {
+		if (nombre.length === 0 || nombre.length > 50) {
 			throw new Error("El nombre de la ciudad es obligatorio y maximo 50 caracteres");
 		}
 
-		if (nombreAlcalde.length === 0 || nombreAlcalde.length > 50) {
+		if (alcalde.length === 0 || alcalde.length > 50) {
 			throw new Error("El nombre del alcalde es obligatorio y maximo 50 caracteres");
 		}
 
@@ -584,8 +583,8 @@ export class CiudadRepository {
 		}
 
 		return {
-			nombreCiudad,
-			nombreAlcalde,
+			nombre,
+			alcalde,
 			region,
 			tamanoMapa
 		};

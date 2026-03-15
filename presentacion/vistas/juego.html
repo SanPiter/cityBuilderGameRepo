@@ -3,7 +3,7 @@
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Document</title>
+            <title>juego</title>
             <!-- Bootstrap 5 CDN -->
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
             <link rel="stylesheet" type="text/css" href="../estilos/juego.css">
@@ -21,7 +21,7 @@
                 <label id="contadorVias" class="text-center fw-semibold">vias: 0</label>
                 <label id="estadisticasCiudadanos" class="text-center fw-semibold">Ciudadanos: 0 | Empleados: 0 | Desempleados: 0 | Felicidad promedio: 0%</label>
             </div>
-            <button id="btnCalcularRuta" type="button" class="btn btn-dark">Calcular Ruta</button>
+            <button id="btnRanking" type="button" class="btn btn-light">🏆 Mostrar ranking</button>
 
             <div class="container-fluid d-flex mt-3">
                 <div class="col-auto me-4">
@@ -91,6 +91,14 @@
         
                                     <button class="btn btn-outline-danger" id="btnDemoler">
                                         Destruir
+                                    </button>
+
+                                    <button id="btnCalcularRuta" type="button" class="btn btn-dark">
+                                        Calcular Ruta
+                                    </button>
+
+                                    <button id="btnExportar" type="button" class="btn">
+                                        Exportar a JSON
                                     </button>
                                 </div>
                             </div>

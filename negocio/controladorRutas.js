@@ -33,22 +33,20 @@ function manejarCalculoRuta(event){
 
     if(!origen){
         origen = [y,x];
-        celdaDiv.classList.add("origen"); // opcional, para marcar visualmente
+        celdaDiv.classList.add("origen"); 
         alert(`Origen seleccionado en [${x},${y}]`);
     } else if(!destino){
         destino = [y,x];
-        celdaDiv.classList.add("destino"); // opcional, para marcar visualmente
+        celdaDiv.classList.add("destino");
         alert(`Destino seleccionado en [${x},${y}]`);
 
-        // Tenemos ambos, calculamos ruta
         calcularRuta(origen, destino);
 
-        // Limpiamos estado para permitir nueva selección
+        // Limpia estado para permitir nueva selección
         origen = null;
         destino = null;
         modoSeleccionRuta = false;
 
-        // Opcional: quitar las clases de marcador después de calcular
         setTimeout(() => {
             document.querySelectorAll(".origen, .destino").forEach(c => c.classList.remove("origen","destino"));
         }, 2000);

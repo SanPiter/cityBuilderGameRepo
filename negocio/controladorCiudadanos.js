@@ -90,7 +90,7 @@ export class controladorCiudadanos{
      */
     obtenerEstadisticas() {
         const { ciudad } = this.#juego;
-        const ciudadanos  = ciudad.ciudadanos;
+        const {ciudadanos} = ciudad;
         const total       = ciudadanos.length;
         const empleados   = ciudad.obtenerTotalEmpleados();
         const desempleados = ciudad.obtenerTotalDesempleados();
@@ -101,7 +101,7 @@ export class controladorCiudadanos{
         return { total, empleados, desempleados, felicidadPromedio };
     }
 
-    // ─── Métodos internos (prefijo _ para que sean testeables unitariamente) ──
+    // ─── Métodos internos
 
     _crearCiudadanos(celdas, ciudad) {
         const capacidadLibre = this._calcularCapacidadResidencialLibre(celdas, ciudad);

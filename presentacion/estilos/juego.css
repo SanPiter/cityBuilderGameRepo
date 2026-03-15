@@ -2,6 +2,7 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color:powderblue ;
 }
 
 .cursor-demolicion {
@@ -62,6 +63,16 @@ body{
 #btnDemolerPanel:hover{
     background: #c0392b;
     color: white;
+}
+
+#btnExportar{
+    background-color:gold;
+    color: black;
+    border: none;
+}
+
+.btn-light{
+    background-color: #6ed43b;
 }
 
 .celda.origen {

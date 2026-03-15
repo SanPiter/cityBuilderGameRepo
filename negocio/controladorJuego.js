@@ -9,7 +9,7 @@ import { EdificioIndustrial } from "../modelos/EdificioIndustrial.js";
 import { EdificioServicio } from "../modelos/EdificioServicio.js";
 import { PlantaUtilidad } from "../modelos/PlantaUtilidad.js";
 import { Parque } from "../modelos/Parque.js";
-import { CiudadRepository } from "../accesoDatos/CiudadRepository.js";
+import { CiudadRepository } from "../accesoDatos/ciudadRepository.js";
 import { SistemaTurnos } from "./SistemaTurnos.js";
 import { controladorCiudadanos } from "./controladorCiudadanos.js";
 import { TipoComercial, TipoIndustrial, TipoServicio, TipoUtilidad, TipoResidencial } from "../modelos/Enums.js";
@@ -74,6 +74,12 @@ let edificioSeleccionado = { x: null, y: null };
 const ciudadRepository = new CiudadRepository();
 
 window.addEventListener("DOMContentLoaded", iniciarJuego);
+
+document.getElementById("btnExportar").addEventListener("click", exportarCiudadJSON);
+
+document.getElementById("btnRanking").addEventListener("click", () => {
+    window.location.href = "/presentacion/vistas/ranking.html";
+});
 
 //esta parte es para captar los eventos, en caso de que algun boton se oprima, se redirecciona.
 btnCasa?.addEventListener("click", function() {
@@ -181,6 +187,7 @@ function iniciarJuego() {
 
     const ciudad = new Ciudad({
         id: data.idCiudad,
+        alcalde: data.alcalde,
         nombre: data.nombre,
         region: data.region,
         mapa,
@@ -188,7 +195,7 @@ function iniciarJuego() {
         ciudadanos: ciudadanosPersistidos
     });
 
-    juego = new Juego({ ciudad });
+    juego = new Juego({ ciudad, turnoActual: data.turnoActual ?? 0 });
     rehidratarAsignacionesCiudadanos(ciudadanosPersistidos, juego.ciudad, mapa.celdas);
     nombreCiudadTitulo.textContent = juego.ciudad.nombre;
 
@@ -720,14 +727,17 @@ function construirParque(x, y){
 
 
 function guardarCiudad(){
+    const data = ciudadRepository.obtenerCiudadActual();
     const dataCiudad = {
         idCiudad: String(juego.ciudad.idCiudad),
+        alcalde: juego.ciudad.alcalde || data.alcalde,
         nombre: juego.ciudad.nombre,
         region: juego.ciudad.region,
         mapa: juego.ciudad.mapa.toJSON(),
         economia: juego.ciudad.economia.toJSON(),
         ciudadanos: juego.ciudad.ciudadanos,
-        poblacion: juego.ciudad.ciudadanos.length
+        poblacion: juego.ciudad.ciudadanos.length,
+        turnoActual: juego.turnoActual
     };
 
     ciudadRepository.guardarCiudadActual(dataCiudad);
@@ -837,4 +847,133 @@ function normalizarReferenciaPersistida(value) {
     }
 
     return null;
+}
+
+//procedimiento que realiza el proceso de exportacion: toma la ciudad actual, construye el formato, lo descarga y notifica.
+function exportarCiudadJSON(){
+
+    const ciudad = ciudadRepository.obtenerCiudadActual();
+
+    if(!ciudad){
+        alert("No hay una ciudad para exportar");
+        return;
+    }
+
+    const data = construirJSONCiudad(ciudad);
+
+    descargarJSON(data, ciudad.nombre);
+
+    notificarExportacion();
+}
+
+
+function construirJSONCiudad(ciudad){
+
+    const felicidadPromedio =
+        ciudad.ciudadanos.length === 0
+        ? 0
+        : ciudad.ciudadanos.reduce((acc,actual)=>acc + (actual.felicidad || 0),0)
+            / ciudad.ciudadanos.length;
+
+    const buildings = [];
+    const roads = [];
+    const parks = [];
+
+    ciudad.mapa.celdas.forEach((fila,y)=>{
+        fila.forEach((celda,x)=>{
+
+            if(celda === "r"){
+                roads.push({x,y});
+            }
+
+            else if(celda === "P1"){
+                parks.push({x,y});
+            }
+
+            else if(celda !== "g"){
+                buildings.push({
+                    type: celda,
+                    x,
+                    y
+                });
+            }
+
+        });
+    });
+
+    return {
+
+        cityName: ciudad.nombre,
+        mayor: ciudad.alcalde,
+
+        gridSize:{
+            width: ciudad.mapa.ancho,
+            height: ciudad.mapa.largo
+        },
+
+        //todavia nos falta conectarlo con la INFO DE API CLIMA
+        coordinates:{
+            lat: 4.6097,
+            lon: -74.0817
+        },
+
+        //Se debe relacionar pero con un atributo que cuente todos los turnos (NO EL ACTUAL)
+        turn: ciudad.turnoActual,
+        score: ciudad.puntuacionAcumulada,
+
+        map: ciudad.mapa.celdas,
+
+        buildings,
+        parks,
+        roads,
+
+        resources: ciudad.economia,
+
+        citizens: ciudad.ciudadanos,
+
+        population: ciudad.poblacion,
+
+        happiness: Math.round(felicidadPromedio)
+
+    };
+}
+
+//descarga el JSON mediante un enlace creado dinamicamente debido a que en 
+// el navegador no podemos crear archivos directamente en el disco del usuario por razones de seguridad
+function descargarJSON(data, nombreCiudad){
+
+    const fecha = new Date().toISOString().split("T")[0];
+
+    const nombreArchivo =
+        `ciudad_${nombreCiudad}_${fecha}.json`;
+
+        //objeto que representa archivo
+    const blob = new Blob(
+        [JSON.stringify(data,null,2)],
+        {type:"application/json"}
+    );
+
+    //crea url temporal para posteriormente descargar archivo 
+    const url = URL.createObjectURL(blob);
+
+    //crea un elemento html vinculo
+    const a = document.createElement("a");
+
+    //redirecciona a la url y asigna nombre de descarga al archivo json
+    a.href = url;
+    a.download = nombreArchivo;
+
+    document.body.appendChild(a);
+
+    //al link se simula el click para descargar archivo
+    a.click();
+
+    //elimina enlace y libera de memoria.
+    document.body.removeChild(a);
+
+    URL.revokeObjectURL(url);
+}
+
+function notificarExportacion(){
+    alert("Ciudad exportada correctamente");
 }
