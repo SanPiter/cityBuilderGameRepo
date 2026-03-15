@@ -14,6 +14,9 @@ import { SistemaTurnos } from "./SistemaTurnos.js";
 import { controladorCiudadanos } from "./controladorCiudadanos.js";
 import { TipoComercial, TipoIndustrial, TipoServicio, TipoUtilidad, TipoResidencial } from "../modelos/Enums.js";
 import * as Rutas from "./controladorRutas.js";
+import { cargarActualizarNoticias } from "./ControladorNoticias.js";
+import { cargarActualizarClima } from "./ControladorClima.js";
+import { COORDENADAS_REGIONES } from "../accesoDatos/ClimaRepositorio.js";
 
 
 //botones
@@ -170,7 +173,7 @@ btnDemolerPanel?.addEventListener("click", function(){
 
 mapaDiv?.addEventListener("click", manejarClickMapa);
 
-function iniciarJuego() {
+async function iniciarJuego() {
     const data = ciudadRepository.obtenerCiudadActual();
 
     if (!data) {
@@ -198,6 +201,20 @@ function iniciarJuego() {
     juego = new Juego({ ciudad, turnoActual: data.turnoActual ?? 0 });
     rehidratarAsignacionesCiudadanos(ciudadanosPersistidos, juego.ciudad, mapa.celdas);
     nombreCiudadTitulo.textContent = juego.ciudad.nombre;
+    //clima
+    const coordenadas = COORDENADAS_REGIONES[data.region];
+if (coordenadas) {
+    cargarActualizarClima(coordenadas); // El controlador se encarga de obtener y actualizar
+
+    setInterval(() => {
+        cargarActualizarClima(coordenadas);
+    }, 1800000);
+}
+
+    cargarActualizarNoticias();
+    setInterval(() => {
+        cargarActualizarNoticias();
+    }, 1800000);
 
     renderizarCiudad();
     //setteamos para que juego este global en controladorRutas
@@ -724,6 +741,7 @@ function construirParque(x, y){
     guardarCiudad();
     desactivarModoConstruccion();
 }
+
 
 
 function guardarCiudad(){
