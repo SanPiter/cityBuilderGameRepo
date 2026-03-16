@@ -22,19 +22,29 @@ body{
 }
 
 
-.panel-edificio{
-    position:absolute;
-    right:20px;
-    top:80px;
 
-    width:200px;
-    padding:15px;
+#panelEdificio {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    background-color: rgb(39, 35, 35);
+    border: 2px solid #333;
+    border-radius: 5px;
+    padding: 15px;
+    width: 250px;         
+    max-height: 40vh;     
+    color:white;
+    
+    overflow-y: auto; 
+    
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    z-index: 9999;
+}
 
-    background:#c8c8cf;
-    color:rgb(0, 0, 0);
-
-    border-radius:5px;
-    box-shadow:0 0 10px rgba(0,0,0,0.5);
+.oculto {
+    display: none;
 }
 
 #cerrarPanel{
@@ -87,10 +97,6 @@ body{
     border: solid;
     transition: background-color 0.2s;
     transition: border 0.2s; /* opcional para animar */
-}
-
-.oculto{
-    display:none;
 }
 
 .container-labels{

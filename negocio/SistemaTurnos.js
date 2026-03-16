@@ -101,8 +101,10 @@ export class SistemaTurnos {
 	celdas.forEach(fila => {
 		fila.forEach(subtipo => {
 			this._procesarCelda(subtipo, economia, totals);
+			this._aplicarProduccionComerciales(subtipo, economia);
 		});
 	});
+	console.log(economia + " <- eco y dinero ->" + economia.dinero);
 
 	this._aplicarProduccionYConsumo(economia, totals);
 	this._procesarMantenimiento(economia, totals.mantenimiento);
@@ -159,6 +161,8 @@ export class SistemaTurnos {
 		}
 	}
 
+	_procesarIngreso
+
 	_procesarProduccion(tipo, economia, totals){
 		if(!tipo.produccionPorTurno) return;
 
@@ -206,6 +210,17 @@ export class SistemaTurnos {
 
 		economia.electricidad -= aplicadoElectricidad;
 		economia.agua -= aplicadoAgua;
+	}
+
+	_aplicarProduccionComerciales(subtipo, economia){
+		// if(subtipo !== "C1" || subtipo !== "C2"){
+		// 	return;
+		// }
+		const tipo = CONFIG_EDIFICIOS[subtipo];
+		if(!tipo) return;
+		console.log(tipo);
+		console.log("este es el ingreso de comerciales: " + tipo.ingresoPorTurno);
+		economia.dinero += tipo.ingresoPorTurno === undefined? 0 : tipo.ingresoPorTurno;;
 	}
 
 

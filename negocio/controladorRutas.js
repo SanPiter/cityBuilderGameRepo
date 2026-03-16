@@ -8,7 +8,7 @@ const mapaDiv = document.getElementById("mapa");
 
 let origen = null;
 let destino = null;
-let modoSeleccionRuta = false; // modo selección
+window.modoSeleccionRuta = false; // modo selección
 
 // Activar modo selección cuando se presiona el botón
 btnRutas.addEventListener("click", () => {

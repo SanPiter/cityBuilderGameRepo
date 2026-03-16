@@ -14,8 +14,8 @@ import { SistemaTurnos } from "./SistemaTurnos.js";
 import { controladorCiudadanos } from "./controladorCiudadanos.js";
 import { TipoComercial, TipoIndustrial, TipoServicio, TipoUtilidad, TipoResidencial } from "../modelos/Enums.js";
 import * as Rutas from "./controladorRutas.js";
-import { cargarActualizarNoticias } from "./ControladorNoticias.js";
-import { cargarActualizarClima } from "./ControladorClima.js";
+import { cargarActualizarNoticias } from "./controladorNoticias.js";
+import { cargarActualizarClima } from "./controladorClima.js";
 import { COORDENADAS_REGIONES } from "../accesoDatos/ClimaRepositorio.js";
 
 
@@ -312,7 +312,7 @@ function desactivarModos(){
 }
 
 function mostrarInfoEdificio(event){
-
+    if(modoSeleccionRuta)return;
     const x = Number(event.target.dataset.x);
     const y = Number(event.target.dataset.y);
 

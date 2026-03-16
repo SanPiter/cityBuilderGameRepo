@@ -23,7 +23,7 @@ document.querySelector("#toLoadFile").addEventListener("change", function(e) {
             window.location.href = "../vistas/juego.html";
             
         } catch (error) {
-       
+        
             alert("Error al procesar: " + error.message);
         }
     };
