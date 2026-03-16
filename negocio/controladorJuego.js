@@ -352,6 +352,36 @@ function mostrarInfoEdificio(event){
     panel.classList.remove("oculto");
 }
 
+function liberarAsignacionesPorDemolicion(subtipo, x, y) {
+    const idEdificioDemolido = `edificio-${y}-${x}`;
+
+    if (
+        subtipo === TipoResidencial.CASA.subtipo ||
+        subtipo === TipoResidencial.APARTAMENTO.subtipo
+    ) {
+        juego.ciudad.ciudadanos.forEach((ciudadano) => {
+            const idVivienda = String(ciudadano.vivienda?.id ?? "");
+            if (idVivienda === idEdificioDemolido) {
+                ciudadano.vivienda = null;
+            }
+        });
+    }
+
+    if (
+        subtipo === TipoIndustrial.FABRICA.subtipo ||
+        subtipo === TipoIndustrial.GRANJA.subtipo ||
+        subtipo === TipoComercial.TIENDA.subtipo ||
+        subtipo === TipoComercial.CENTRO_COMERCIAL.subtipo
+    ) {
+        juego.ciudad.ciudadanos.forEach((ciudadano) => {
+            const idEmpleo = String(ciudadano.empleo?.id ?? "");
+            if (idEmpleo === idEdificioDemolido) {
+                ciudadano.empleo = null;
+            }
+        });
+    }
+}
+
 //este metodo aplica la misma demolicion solo que ya no depende del click
 function destruirElementoDirecto(x, y){
 
@@ -378,6 +408,8 @@ function destruirElementoDirecto(x, y){
     }
 
     juego.ciudad.economia.dinero += Math.floor(costo * 0.5);
+
+    liberarAsignacionesPorDemolicion(subtipo, x, y);
 
     juego.ciudad.mapa.celdas[y][x] = "g";
 
@@ -420,6 +452,8 @@ function destruirElemento(event){
     }
 
     juego.ciudad.economia.dinero += Math.floor(costo * 0.5);
+
+    liberarAsignacionesPorDemolicion(subtipo, x, y);
 
     juego.ciudad.mapa.celdas[y][x] = "g";
 
@@ -658,6 +692,8 @@ function actualizarEstadisticasCiudadanos() {
 
     const { ciudadanos } = juego.ciudad;
     const total = ciudadanos.length;
+    const noResidentes = juego.ciudad.obtenerCiudadanosSinVivienda().length;
+    const residentes = total - noResidentes;
     const empleados = juego.ciudad.obtenerTotalEmpleados();
     const desempleados = juego.ciudad.obtenerTotalDesempleados();
     const felicidadPromedio = total === 0
@@ -665,7 +701,7 @@ function actualizarEstadisticasCiudadanos() {
         : Math.round(ciudadanos.reduce((sum, ciudadano) => sum + ciudadano.felicidad, 0) / total);
 
     estadisticasCiudadanosLabel.textContent =
-        `Ciudadanos: ${total} | Empleados: ${empleados} | Desempleados: ${desempleados} | Felicidad promedio: ${felicidadPromedio}%`;
+        `Ciudadanos: ${total} | Residentes: ${residentes} | No residentes: ${noResidentes} | Empleados: ${empleados} | Desempleados: ${desempleados} | Felicidad promedio: ${felicidadPromedio}%`;
 }
 
 function tieneViaAdyacente(x, y) {
@@ -769,10 +805,20 @@ function rehidratarAsignacionesCiudadanos(ciudadanosPersistidos, ciudad, celdas)
     }
 
     const { residencialesPorId, productivosPorId } = construirIndiceEdificios(celdas);
-    const ciudadanosPorId = new Map(ciudad.ciudadanos.map((ciudadano) => [String(ciudadano.id), ciudadano]));
+    const ciudadanosActuales = ciudad.ciudadanos;
+    const ciudadanosPorId = new Map();
 
-    ciudadanosPersistidos.forEach((ciudadanoPersistido) => {
-        const ciudadano = ciudadanosPorId.get(String(ciudadanoPersistido.id));
+    ciudadanosActuales.forEach((ciudadano) => {
+        const id = String(ciudadano.id);
+        if (!ciudadanosPorId.has(id)) {
+            ciudadanosPorId.set(id, []);
+        }
+        ciudadanosPorId.get(id).push(ciudadano);
+    });
+
+    ciudadanosPersistidos.forEach((ciudadanoPersistido, index) => {
+        const colaCiudadanos = ciudadanosPorId.get(String(ciudadanoPersistido.id)) ?? [];
+        const ciudadano = colaCiudadanos.shift() ?? ciudadanosActuales[index] ?? null;
         if (!ciudadano) {
             return;
         }
