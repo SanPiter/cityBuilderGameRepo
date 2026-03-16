@@ -62,7 +62,7 @@ export class controladorCiudadanos{
         this.#juego         = juego;
         this.#config        = { ...CONFIG_DEFECTO, ...config };
         this.#registroEdificios = new Map();
-        this.#contadorId    = 0;
+        this.#contadorId    = this._obtenerMaxIdCiudadano();
     }
 
     // ─── API pública ──────────────────────────────────────────────────────────
@@ -273,5 +273,20 @@ export class controladorCiudadanos{
 
     _aleatorioEntre(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    _obtenerMaxIdCiudadano() {
+        const ids = this.#juego.ciudad.ciudadanos
+            .map((ciudadano) => String(ciudadano.id ?? ""))
+            .map((id) => {
+                const match = /^c-(\d+)$/.exec(id);
+                return match ? Number(match[1]) : 0;
+            });
+
+        if (ids.length === 0) {
+            return 0;
+        }
+
+        return Math.max(...ids);
     }
 }
