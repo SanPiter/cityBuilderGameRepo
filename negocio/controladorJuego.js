@@ -323,7 +323,7 @@ async function iniciarJuego() {
         sistemaCiudadanos,
         sistemaPuntuacion,
         (datos) => {
-            actualizarPuntuacion(datos.puntuacion);
+            actualizarPuntuacion(datos.desglose.puntuacion);
             renderDesglose(datos.desglose);
             guardarCiudad();
             renderizarCiudad();

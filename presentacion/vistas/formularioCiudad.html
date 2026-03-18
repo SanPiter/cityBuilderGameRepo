@@ -9,18 +9,35 @@
     <link rel="stylesheet" type="text/css" href="../estilos/formularioCiudad.css">
 </head>
 <body class="d-flex align-items-center justify-content-center min-vh-100">
+
+    <!-- este es el overlay que oscurece lo demas -->
+    <div class="overlay-espera"></div>
+
+
     <div class="botonCargar">
         <label for="toLoadFile" class="btn btn-outline-secondary shadow-sm">
             <i class="bi bi-file-earmark-arrow-up"></i> Cargar Mapa
         </label>
         <input type="file" id="toLoadFile" class="d-none" accept=".txt">
     </div>
+
+    <!-- panel inicio -->
+    <div id="panel-continuar" class="activo">
+            <div class="panel">
+                <h3>Partida encontrada</h3>
+                <p id="info-ciudad"></p>
+
+                <button id="btnContinuar" class="btn btn-light">Continuar</button>
+                <button id="btnNueva" class="btn btn-light">Nueva Ciudad</button>
+            </div>
+        </div>
+
     <div class="d-flex flex-column align-items-center w-100">
         <h3 class="mb-4">Crear nueva ciudad</h3>
         <div class="container-md">
             <div class="card shadow-sm">
                 <div class="card-body p-4">
-                    <form>
+                    <form id="formulario">
                         <div class="row g-3 justify-content-center">
                             <div class="col-12 col-md-6 ">
                                 <label for="nombreCiudad" class="form-label" >Nombre de la ciudad</label>

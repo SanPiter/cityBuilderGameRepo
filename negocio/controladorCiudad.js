@@ -1,6 +1,52 @@
 import { CiudadRepository } from "../accesoDatos/CiudadRepository.js";
 
 const ciudadRepository = new CiudadRepository();
+const panel = document.getElementById("panel-continuar");
+const infoCiudad = document.getElementById("info-ciudad");
+
+const btnContinuar = document.getElementById("btnContinuar");
+const btnNueva = document.getElementById("btnNueva");
+
+const overlay = document.querySelector(".overlay-espera");
+const formulario = document.getElementById("formulario");
+
+
+document.addEventListener("DOMContentLoaded", init);
+
+function init() {
+    const ciudad = ciudadRepository.obtenerCiudadActual();
+    console.log("la ciudad: ",ciudad)
+    if (ciudad) {
+        mostrarPanel(ciudad);
+    } else {
+        mostrarFormulario();
+    }
+}
+
+function mostrarPanel(ciudad) {
+    panel.style.display = "block";
+    overlay.style.display = "block";
+
+    formulario.style.pointerEvents = "none"; // bloquea interacción
+
+    infoCiudad.textContent = 
+        `Ciudad: ${ciudad.nombre} | Alcalde: ${ciudad.alcalde} | Turno: ${ciudad.turnoActual}`;
+}
+
+function mostrarFormulario() {
+    panel.style.display = "none";
+    overlay.style.display = "none";
+
+    formulario.style.pointerEvents = "auto";
+}
+
+btnContinuar.addEventListener("click", () => {
+    window.location.href = "../vistas/juego.html";
+});
+
+btnNueva.addEventListener("click", () => {
+    mostrarFormulario();
+});
 
 document.querySelector("#toLoadFile").addEventListener("change", function(e) {
     const archivo = e.target.files[0];
