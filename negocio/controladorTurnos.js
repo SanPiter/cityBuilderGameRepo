@@ -178,7 +178,7 @@ export class controladorTurnos {
 		? this.#controladorPuntuacion.calcularPuntuacion()
 		: { puntuacion: 0 };
 	
-	const {puntuacion} = desglose;
+	const score = desglose.puntuacion;
 
 	const estadisticasCiudadanos = this.#controladorCiudadanos && typeof this.#controladorCiudadanos.obtenerEstadisticas === "function"
 		? this.#controladorCiudadanos.obtenerEstadisticas()
@@ -195,7 +195,7 @@ export class controladorTurnos {
 		ingresoTotal: totals.ingresoTotal,
 		beneficioFelicidadTotal: totals.beneficioFelicidadTotal,
 		mantenimientoTotal: totals.mantenimiento,
-		puntuacion,
+		score,
 		desglose,
 		estadisticasCiudadanos,
 		resumenMigracion

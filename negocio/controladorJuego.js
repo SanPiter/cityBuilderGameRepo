@@ -50,8 +50,6 @@ const containerPuntaje = document.querySelector(".puntaje-container");
 const panel = document.getElementById("panelDesglose");
 
 //contadores
-
-const puntuacion = document.getElementById("puntaje");
 const dinero = document.getElementById("dinero");
 const totalAgua = document.getElementById("totalAgua");
 const totalElectricidad = document.getElementById("totalElectricidad");
@@ -59,7 +57,7 @@ const totalAlimento = document.getElementById("totalAlimento");
 const promedioFelicidad = document.getElementById("promedioFelicidad");
 
 
-const puntaje = document.getElementById("puntaje");
+
 const contadorResidenciales = document.getElementById("contadorResidenciales");
 const contadorComerciales = document.getElementById("contadorComerciales");
 const contadorUtilidades = document.getElementById("contadorUtilidades");
@@ -290,7 +288,7 @@ async function iniciarJuego() {
         ciudadanos: ciudadanosPersistidos
     });
 
-    juego = new Juego({ ciudad, turnoActual: data.turnoActual ?? 0 });
+    juego = new Juego({ ciudad, turnoActual: data.turnoActual ?? 0, puntuacionAcumulada: data.puntuacionAcumulada ?? 0});
     rehidratarAsignacionesCiudadanos(ciudadanosPersistidos, juego.ciudad, mapa.celdas);
     nombreCiudadTitulo.textContent = juego.ciudad.nombre;
     //clima
@@ -323,7 +321,8 @@ async function iniciarJuego() {
         sistemaCiudadanos,
         sistemaPuntuacion,
         (datos) => {
-            actualizarPuntuacion(datos.desglose.puntuacion);
+            juego.puntuacionAcumulada = datos.score ?? datos.desglose?.score?? 0;
+            actualizarPuntuacion(datos.score);
             renderDesglose(datos.desglose);
             guardarCiudad();
             renderizarCiudad();
@@ -705,7 +704,7 @@ function obtenerTipoPorSubtipo(subtipo){
 function actualizarRecursos(juego){
     sistemaCiudadanos = new controladorCiudadanos(juego);
     let {ciudadanos} = juego.ciudad;
-    puntuacion.textContent = `${juego.puntuacionAcumulada}`;
+    puntaje.textContent = `${juego.puntuacionAcumulada}`; //OJO
     dinero.textContent = `${juego.ciudad.economia.dinero}`;
     totalAgua.textContent = `${juego.ciudad.economia.agua}`;
     totalElectricidad.textContent = `${juego.ciudad.economia.electricidad}`;
@@ -713,10 +712,9 @@ function actualizarRecursos(juego){
     promedioFelicidad.textContent = `${sistemaCiudadanos.obtenerFelicidadPromedio(ciudadanos)}`;
 }
 
-function actualizarPuntuacion(puntuacion){
-    if(!puntaje) return;
-
-    puntaje.textContent = puntuacion;
+function actualizarPuntuacion(scr){
+    const puntaje = document.getElementById("puntaje");
+    puntaje.textContent = scr;
 }
 
 function renderDesglose(desglose) {
