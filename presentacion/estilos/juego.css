@@ -4,7 +4,6 @@ body{
     align-items: center;
     background-color:powderblue ;
 }
-
 .cursor-demolicion {
     cursor: url("/textures/hammer1redim.png"), auto;
 }
@@ -671,6 +670,14 @@ MOBILE (<= 768px)
     .container-fluid.d-flex.mt-3 {
         flex-direction: column;
         gap: 10px;
+    }
+
+    #menuHerramientas .d-grid {
+    min-width: 270px; /* prueba 300–350px */
+}
+
+    .card-body{
+        max-width: 500px;
     }
 
     /* ocultar sidebar izquierdo (menú construcción) */

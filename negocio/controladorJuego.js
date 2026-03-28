@@ -57,7 +57,12 @@ const totalElectricidad = document.getElementById("totalElectricidad");
 const totalAlimento = document.getElementById("totalAlimento");
 const promedioFelicidad = document.getElementById("promedioFelicidad");
 
-
+const ciudadanosTotal      = document.getElementById("ciudadanos");
+const empleadosContador       = document.getElementById("empleados");
+const desempleadosContador    = document.getElementById("desempleados");
+const residentesContador      = document.getElementById("residentes");
+const noResidentesContador    = document.getElementById("noResidentes");
+const felicidadPromContador   = document.getElementById("felicidadProm");
 
 const contadorResidenciales = document.getElementById("contadorResidenciales");
 const contadorComerciales = document.getElementById("contadorComerciales");
@@ -82,7 +87,6 @@ const contadorHospitales = document.getElementById("contadorHospitales");
 
 const contadorElectricas = document.getElementById("contadorElectricas");
 const contadorAgua = document.getElementById("contadorAgua");
-const estadisticasCiudadanosLabel = document.getElementById("estadisticasCiudadanos");
 
 const MODOS_CONSTRUCCION = Object.freeze({
     NINGUNO: "NINGUNO",
@@ -948,22 +952,18 @@ function actualizarContadorElementos() {
 }
 
 function actualizarEstadisticasCiudadanos() {
-    if (!estadisticasCiudadanosLabel || !juego?.ciudad) {
-        return;
-    }
-
     const { ciudadanos } = juego.ciudad;
     const total = ciudadanos.length;
     const noResidentes = juego.ciudad.obtenerCiudadanosSinVivienda().length;
     const residentes = total - noResidentes;
     const empleados = juego.ciudad.obtenerTotalEmpleados();
     const desempleados = juego.ciudad.obtenerTotalDesempleados();
-    const felicidadPromedio = total === 0
-        ? 0
-        : Math.round(ciudadanos.reduce((sum, ciudadano) => sum + ciudadano.felicidad, 0) / total);
 
-    estadisticasCiudadanosLabel.textContent =
-        `Ciudadanos: ${total} | Residentes: ${residentes} | No residentes: ${noResidentes} | Empleados: ${empleados} | Desempleados: ${desempleados} | Felicidad promedio: ${felicidadPromedio}%`;
+    ciudadanosTotal.textContent = `${total}`;
+    empleadosContador.textContent = `${empleados}`;
+    desempleadosContador.textContent = `${desempleados}`;
+    residentesContador.textContent = `${residentes}`;
+    noResidentesContador.textContent = `${noResidentes}`;
 }
 
 function tieneViaAdyacente(x, y) {
